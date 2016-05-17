@@ -12,6 +12,13 @@ app.get('/', function(req, res) {
         {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
         {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
         {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
+        {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
+
     ];
     
     res.render('transactions', {'transactions': listOfTransactions});

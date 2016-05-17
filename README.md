@@ -22,3 +22,7 @@
 * Add in body-parser
 * Setup route to show account form
 * Add basic unstyled account form
+
+# Style the landing page
+* Add a better header/title
+* Display all the transctions in a grid

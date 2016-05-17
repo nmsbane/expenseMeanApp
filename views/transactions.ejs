@@ -1,13 +1,31 @@
 <% include partials/header %>
-<a href="/account/new">Add a new account</a>
-<h1>This shows all the transactions done by the user</h1>
-
-<% transactions.forEach(function(transaction) { %>
-    <div>
-        <li><%= transaction.tag %></li>
-        <li><%= transaction.description %></li>
-        <li><%= transaction.amount %></li>
+<div class="container">
+    
+    <header class='jumbotron'>
+        <div class="container">
+        <h1>Your recent transactions</h1>
+        <p>
+            <a class="btn btn-primary" href="/account/new">Add a new account</a>
+        </p>
+        </div>
+    </header>
+    
+    <div class='row' style="display:flex; flex-wrap: wrap;">
+        <% transactions.forEach(function(transaction) { %>
+            <div class='col-md-3 col-sm-6'>
+                <div class="thumbnail">
+                    <div class="caption text-center">
+                        <h4>
+                            <%= transaction.date %>
+                        </h4>
+                    </div>
+                    <li><%= transaction.tag %></li>
+                    <li><%= transaction.description %></li>
+                    <li><%= transaction.amount %></li>
+                </div>
+            </div>
+        <% }); %>
     </div>
-<% }); %>
+    <% include partials/footer %>
+</div>
 
-<% include partials/footer %>
