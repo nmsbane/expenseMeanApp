@@ -1,0 +1,27 @@
+<% include partials/header %>
+<div class='container'>
+    <div class="row">
+        <h1 style="text-align: center">Add balance bank account</h1>
+        <div style="width: 30% ; margin: 20px auto;">
+            <form action="/account/change" method="POST">
+                <div class="form-group">
+                    <label for="account">Choose Account</label>
+                    <select class="form-control" id="account" name="accountId">
+                      <% accounts.forEach(function(account) {%>
+                              <option value="<%= account._id %>"><%= account.name %> </option>
+                      <% }); %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class='form-control' type="number" name='balance' placeholder="Add the balance" required>    
+                </div>
+                <div class='form-group'>
+                    <button class='btn btn-large btn-default btn-block btn-primary'>Add balance</button>
+                </div>
+                <a href="/">Go to homepage</a>
+                <% include partials/footer %>
+            </form>
+        </div>
+    </div>
+    
+</div>

@@ -62,9 +62,36 @@ app.post('/account', function(req, res) {
    
 });
 
+app.post('/account/change', function(req, res) {
+   // get the id
+   var accountId = req.body.accountId;
+   var balance = parseInt(req.body.balance);
+   
+   Account.findById(accountId, function(err, account) {
+       if(err) {
+           console.log(err);
+       } else {
+           account.balance = account.balance + balance;
+           console.log(account);
+           account.save();
+       }
+   });
+   res.redirect('/');
+});
+
 app.get('/account/new', function(req, res) {
    // send a form to create a new account
    res.render('new');
+});
+
+app.get('/account/change', function(req, res) {
+   Account.find({}, function(err, accounts) {
+       if(err) {
+           console.log(err);
+       } else {
+           res.render('change', {accounts: accounts});
+       }
+   }) 
 });
 
 app.listen(process.env.PORT, process.env.IP, function() {
