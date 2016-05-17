@@ -1,11 +1,29 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+
+
+// connect to local mongodb, database is expenseApp
+mongoose.connect('mongodb://localhost/expenseApp');
 
 // tell app to use bodyparser
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
+
+
+// Account schema
+var accountSchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    balance: Number
+});
+
+
+var Account = mongoose.model('Account', accountSchema);
+
+
 
 app.get('/', function(req, res) {
     var listOfTransactions = [
@@ -21,7 +39,7 @@ app.get('/', function(req, res) {
 
     ];
     
-    res.render('transactions', {'transactions': listOfTransactions});
+    res.render('transactions', {transactions: listOfTransactions});
 });
 
 
@@ -33,8 +51,15 @@ app.post('/account', function(req, res) {
     var newAccount = {
         'name': name, 'description': description, 'balance': balance
     };
-    // temporarly store it in an accounts array
-   res.redirect('/');
+    // create the new account and save it to db
+    Account.create(newAccount, function(err, account) {
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect('/');
+        }
+    });
+   
 });
 
 app.get('/account/new', function(req, res) {

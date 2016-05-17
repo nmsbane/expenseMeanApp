@@ -31,3 +31,7 @@
 * Add a navbar to all templates
 * Style the add account form
 
+# Add mongoose
+* Install and configure mongoose
+* Setup accounts model
+* Use accounts model inside of our routes
