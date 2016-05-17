@@ -26,3 +26,8 @@
 # Style the landing page
 * Add a better header/title
 * Display all the transctions in a grid
+
+# Style the Navbar and Form
+* Add a navbar to all templates
+* Style the add account form
+
