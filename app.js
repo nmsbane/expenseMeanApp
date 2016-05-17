@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('view engine', 'ejs');
 
-
 // Account schema
 var accountSchema = new mongoose.Schema({
     name: String,
@@ -23,6 +22,32 @@ var accountSchema = new mongoose.Schema({
 
 var Account = mongoose.model('Account', accountSchema);
 
+var tagSchema = new mongoose.Schema({
+    name: String
+});
+
+var Tag = mongoose.model('Tag', tagSchema);
+
+// transaction schema
+var transactionSchema = new mongoose.Schema({
+   account: {
+       type: mongoose.Schema.Types.ObjectId,
+       ref: "Account"
+   },
+   description: String,
+   expenseAmount: Number,
+   dateAdded: Date
+   
+});
+
+
+var Transaction = mongoose.model('Transaction', transactionSchema);
+
+transactionSchema.pre('save', function(next){
+  var now = new Date();
+  this.dateAdded = now.toDateString();
+  next();
+});
 
 
 app.get('/', function(req, res) {
@@ -40,6 +65,45 @@ app.get('/', function(req, res) {
     ];
     
     res.render('transactions', {transactions: listOfTransactions});
+});
+
+app.get('/new', function(req, res) {
+    Account.find({}, function(err, accounts) {
+       if(err) {
+           console.log(err);
+       } else {
+           res.render('newTransaction', {accounts: accounts});
+       }
+   })
+});
+
+app.post('/new', function(req, res) {
+    var accountId = req.body.accountId;
+    var expense = parseInt(req.body.expense);
+    var description = req.body.description;
+    
+    Account.findById(accountId, function(err, account) {
+       if(err)  {
+           console.log(err);
+       } else {
+           account.balance = account.balance - expense;
+           console.log(account);
+           account.save();
+           Transaction.create({
+               account: account,
+               expenseAmount: expense,
+               description: description
+            }, function(err, transaction) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    console.log(transaction);
+                }
+            });
+            res.redirect('/');
+       }
+    });
+    
 });
 
 
