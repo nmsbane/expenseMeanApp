@@ -1,3 +1,4 @@
+<% include partials/header %>
 <h1>This shows all the transactions done by the user</h1>
 
 <% transactions.forEach(function(transaction) { %>
@@ -7,3 +8,5 @@
         <li><%= transaction.amount %></li>
     </div>
 <% }); %>
+
+<% include partials/footer %>

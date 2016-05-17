@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 // });
 
 
-app.get('/transactions', function(req, res) {
+app.get('/', function(req, res) {
     var listOfTransactions = [
         {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
         {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},

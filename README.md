@@ -10,3 +10,8 @@
 * Description (less than 30 chars)
 * Amount 
 * Date and time
+
+# Layout and Basic styling
+
+* Create our header and footer partials
+* Add in Bootstrap
