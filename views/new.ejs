@@ -1,0 +1,10 @@
+<% include partials/header %>
+<h1>Add an bank account</h1>
+
+<form action="/account" method="POST">
+    <input type="text" name="name" placeholder="name of the account" required>
+    <input type="text" name="description" placeholder="description of the account" required>
+    <input type="number" name='balance' placeholder="enter the balance" required>
+    <button>Add account</button>
+</form>
+<% include partials/footer %>

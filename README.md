@@ -15,3 +15,10 @@
 
 * Create our header and footer partials
 * Add in Bootstrap
+
+# Creating new types of bank accounts
+
+* Set up new Bank Accounts post route
+* Add in body-parser
+* Setup route to show account form
+* Add basic unstyled account form
