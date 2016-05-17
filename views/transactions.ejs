@@ -1,0 +1,9 @@
+<h1>This shows all the transactions done by the user</h1>
+
+<% transactions.forEach(function(transaction) { %>
+    <div>
+        <li><%= transaction.tag %></li>
+        <li><%= transaction.description %></li>
+        <li><%= transaction.amount %></li>
+    </div>
+<% }); %>
