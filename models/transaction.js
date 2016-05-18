@@ -12,6 +12,10 @@ var transactionSchema = new mongoose.Schema({
         },
         username: String
     },
+    tag: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag"
+    },
    description: String,
    expenseAmount: Number,
    dateAdded: Date
