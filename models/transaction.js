@@ -5,6 +5,13 @@ var transactionSchema = new mongoose.Schema({
        type: mongoose.Schema.Types.ObjectId,
        ref: "Account"
    },
+   creator: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    },
    description: String,
    expenseAmount: Number,
    dateAdded: Date

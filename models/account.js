@@ -4,7 +4,14 @@ var mongoose = require("mongoose");
 var accountSchema = new mongoose.Schema({
     name: String,
     description: String,
-    balance: Number
+    balance: Number,
+    creator: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    }
 });
 
 

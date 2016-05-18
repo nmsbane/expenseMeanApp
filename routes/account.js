@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Account = require("../models/account");
+var User = require("../models/user");
 var middlewareObj = require("../middleware");
 
 
@@ -17,7 +18,19 @@ router.post('/', middlewareObj.isLoggedIn, function(req, res) {
         if(err) {
             console.log(err);
         } else {
-            res.redirect('/');
+            account.creator.id = req.user._id;
+            account.creator.username = req.user.username;
+            account.save();
+            User.findById(req.user._id, function(err, user) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    user.accounts.push(account);
+                    user.save();
+                    res.redirect('/');
+                }
+            })
+            
         }
     });
    
@@ -46,13 +59,19 @@ router.get('/new', middlewareObj.isLoggedIn, function(req, res) {
 });
 
 router.get('/change', middlewareObj.isLoggedIn, function(req, res) {
-   Account.find({}, function(err, accounts) {
-       if(err) {
+    User.findOne({_id: req.user._id}).populate('accounts').exec(function(err, user) {
+        if(err)  {
            console.log(err);
+           res.redirect('/');
        } else {
-           res.render('change', {accounts: accounts});
+           if (user.accounts.length == 0) {
+               res.redirect('/');
+           } else {
+            res.render('change', {accounts: user.accounts});    
+           }
+           
        }
-   }) 
+    });
 });
 
 module.exports = router;
