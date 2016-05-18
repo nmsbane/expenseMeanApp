@@ -8,20 +8,15 @@ var middlewareObj = require("../middleware");
 
 
 router.get('/', middlewareObj.isLoggedIn, function(req, res) {
-    var listOfTransactions = [
-        {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
-        {'tag': "snacks", 'description': 'snacks bill', 'amount': 100, 'date': 'some date here'},
-
-    ];
+    User.findOne({_id: req.user._id}).populate('transactions').exec(function(err, user){
+       if(err)  {
+           console.log(err);
+       } else {
+           res.render('transactions', {transactions: user.transactions});
+       }
+    });
     
-    res.render('transactions', {transactions: listOfTransactions});
+    
 });
 
 router.get('/new', middlewareObj.isLoggedIn, function(req, res) {

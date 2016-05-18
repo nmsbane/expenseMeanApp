@@ -13,12 +13,12 @@
                 <div class="thumbnail">
                     <div class="caption text-center">
                         <h4>
-                            <%= transaction.date %>
+                            <%= transaction.dateAdded.toDateString() %>
                         </h4>
                     </div>
-                    <li><%= transaction.tag %></li>
+                    <li><%= transaction.tag%></li>
                     <li><%= transaction.description %></li>
-                    <li><%= transaction.amount %></li>
+                    <li><%= transaction.expenseAmount %></li>
                 </div>
             </div>
         <% }); %>
