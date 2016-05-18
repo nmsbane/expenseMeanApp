@@ -24,6 +24,11 @@ var UserSchema = mongoose.Schema({
     ]
 });
 
+// create primary key 
+// username is unique
+UserSchema.index({ username: 1}, { unique: true });
+
+
 UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", UserSchema);

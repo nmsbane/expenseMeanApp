@@ -13,6 +13,9 @@ var accountSchema = new mongoose.Schema({
         username: String
     }
 });
+// create composite primary key 
+// a single user cant have duplicate account name 
+accountSchema.index({ name: 1, creator: 1}, { unique: true });
 
 
 module.exports = mongoose.model('Account', accountSchema);

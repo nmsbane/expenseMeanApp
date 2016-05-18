@@ -10,19 +10,21 @@ var middlewareObj = require("../middleware");
 router.get('/', middlewareObj.isLoggedIn, function(req, res) {
     User.findOne({_id: req.user._id}).populate('transactions').exec(function(err, user){
        if(err)  {
+           req.flash('error', err.message);
            console.log(err);
+           res.redirect('/');
        } else {
            res.render('transactions', {transactions: user.transactions});
        }
     });
-    
-    
 });
 
 router.get('/new', middlewareObj.isLoggedIn, function(req, res) {
     User.findOne({_id: req.user._id}).populate('accounts').populate('tags').exec(function(err, user) {
         if(err) {
+           req.flash('error', err.message);
            console.log(err);
+           res.redirect('/');
        } else {
            res.render('newTransaction', {accounts: user.accounts, tags: user.tags});
        }
@@ -33,15 +35,19 @@ router.post('/new', middlewareObj.isLoggedIn, function(req, res) {
     var accountId = req.body.accountId;
     var expense = parseInt(req.body.expense);
     var description = req.body.description;
-    var tag = req.body.tag;
+    var tagName = req.body.tag;
     
     User.findById(req.user._id, function(err, user) {
        if(err)  {
+           req.flash('error', err.message);
            console.log(err);
+           res.redirect('/');
        } else {
            Account.findById(accountId, function(err, account) {
            if(err)  {
+               req.flash('error', err.message);
                console.log(err);
+               res.redirect('/');
            } else {
                account.balance = account.balance - expense;
                console.log(account);
@@ -52,26 +58,36 @@ router.post('/new', middlewareObj.isLoggedIn, function(req, res) {
                    description: description
                 }, function(err, transaction) {
                     if(err) {
+                        req.flash('error', err.message);
                         console.log(err);
+                        res.redirect('/');
                     } else {
                         Tag.findOne({
-                            name: tag
+                            name: tagName
                         }, function(err,tag) {
-                            if(err) {
+                            if(tag == null) {
                                 // tag does not exist, so create it
                                 Tag.create({
-                                    name: tag
+                                    name: tagName,
+                                    creator: {
+                                        id: req.user._id,
+                                        username: req.user.username
+                                    }
                                 }, function(err, tag) {
                                     if(err) {
+                                        req.flash('error', err.message);
                                         console.log(err);
+                                        res.redirect('/');
                                     } else {
-                                        tag.creator.id = req.user._id;
-                                        tag.creator.username = req.user.username;
-                                        tag.save();
                                         user.tags.push(tag);
-                                        user.save();
                                         transaction.tag = tag;
+                                        
+                                        transaction.creator.id = req.user._id;
+                                        transaction.creator.username = req.user.username;
+                                        user.transactions.push(transaction);
+                                        user.save();
                                         transaction.save();
+                                        req.flash('success', 'Added the expense');
                                         res.redirect('/')
                                     }
                                     
@@ -84,6 +100,7 @@ router.post('/new', middlewareObj.isLoggedIn, function(req, res) {
                                 user.transactions.push(transaction);
                                 user.save();
                                 console.log(transaction);
+                                req.flash('success', 'Added the expense');
                                 res.redirect('/');
                             }
                         })

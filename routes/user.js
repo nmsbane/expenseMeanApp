@@ -12,9 +12,11 @@ router.post('/register', function(req, res) {
    var newUser = new User({username: req.body.username}) ;
    User.register(newUser, req.body.password, function(err, user) {
       if(err)  {
+          req.flash('error', err.message);
           res.redirect('register');
       } else {
           passport.authenticate("local")(req, res, function() {
+              req.flash('success', 'successfully registerd');
               res.redirect('/');
           })
       }
@@ -33,7 +35,7 @@ router.post('/login', passport.authenticate("local",
         failureRedirect: '/auth/login'
     }
 ), function(req, res) {
-    
+    req.flash('success', 'successfully loggedin');
 });
 
 // logout link

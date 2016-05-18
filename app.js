@@ -11,6 +11,7 @@ var Transaction = require("./models/transaction");
 var AccountRoutes = require("./routes/account.js");
 var TransactionRoutes = require("./routes/transaction.js");
 var AuthRoutes = require("./routes/user.js");
+var flash = require("connect-flash");
 
 // connect to local mongodb, database is expenseApp
 mongoose.connect('mongodb://localhost/expenseApp');
@@ -27,6 +28,8 @@ app.use(require("express-session")({
 // configure passport
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
 
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -38,6 +41,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 // middleware to put the currentUser in every response local variables
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 
