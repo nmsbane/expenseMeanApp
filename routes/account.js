@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var Account = require("../models/account");
+var middlewareObj = require("../middleware");
 
 
-router.post('/', function(req, res) {
+router.post('/', middlewareObj.isLoggedIn, function(req, res) {
     // create a new account based on the form data and 
     var name = req.body.name;
     var description = req.body.description;
@@ -22,7 +23,7 @@ router.post('/', function(req, res) {
    
 });
 
-router.post('/change', function(req, res) {
+router.post('/change', middlewareObj.isLoggedIn, function(req, res) {
    // get the id
    var accountId = req.body.accountId;
    var balance = parseInt(req.body.balance);
@@ -39,12 +40,12 @@ router.post('/change', function(req, res) {
    res.redirect('/');
 });
 
-router.get('/new', function(req, res) {
+router.get('/new', middlewareObj.isLoggedIn, function(req, res) {
    // send a form to create a new account
    res.render('new');
 });
 
-router.get('/change', function(req, res) {
+router.get('/change', middlewareObj.isLoggedIn, function(req, res) {
    Account.find({}, function(err, accounts) {
        if(err) {
            console.log(err);

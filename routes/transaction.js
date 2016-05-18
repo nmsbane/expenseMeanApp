@@ -2,9 +2,10 @@ var express = require("express");
 var router = express.Router();
 var Account = require("../models/account");
 var Transaction = require("../models/transaction");
+var middlewareObj = require("../middleware");
 
 
-router.get('/', function(req, res) {
+router.get('/', middlewareObj.isLoggedIn, function(req, res) {
     var listOfTransactions = [
         {'tag': "Dinner", 'description': 'Dinner bill', 'amount': 100, 'date': 'some date here'},
         {'tag': "lunch", 'description': 'lunch bill', 'amount': 100, 'date': 'some date here'},
@@ -21,7 +22,7 @@ router.get('/', function(req, res) {
     res.render('transactions', {transactions: listOfTransactions});
 });
 
-router.get('/new', function(req, res) {
+router.get('/new', middlewareObj.isLoggedIn, function(req, res) {
     Account.find({}, function(err, accounts) {
        if(err) {
            console.log(err);
@@ -31,7 +32,7 @@ router.get('/new', function(req, res) {
    })
 });
 
-router.post('/new', function(req, res) {
+router.post('/new', middlewareObj.isLoggedIn, function(req, res) {
     var accountId = req.body.accountId;
     var expense = parseInt(req.body.expense);
     var description = req.body.description;
